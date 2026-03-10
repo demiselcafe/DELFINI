@@ -2,11 +2,11 @@
  * Informations générales du site — à modifier selon l'artiste
  */
 export const site = {
-  artistName: "Prénom Nom",
+  artistName: "Matthieu DELFINI",
   subtitle: "Peintre",
   email: "contact@artiste.com",
-  instagram: "https://instagram.com/artiste",
-  instagramHandle: "@artiste",
+  instagram: "https://www.instagram.com/matthieudelfini/",
+  instagramHandle: "@matthieudelfini",
 } as const;
 
 /** Style bouton type Claire Tabouret : fond noir, texte blanc, uppercase */

@@ -6,7 +6,7 @@ export const about = {
   /** Image portrait — ici une photo libre de droits (Unsplash). Remplacer par /images/portrait.jpg si besoin. */
   portrait: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
   bioShort: "Peintre vivant et travaillant entre Marseille et Paris. Le voyage, le paysage et la figure sont au cœur d’une pratique qui mêle observation et mémoire.",
-  bioLong: `Né(e) à [ville], [Prénom Nom] étudie les beaux-arts avant de développer une pratique de la peinture centrée sur le paysage, le corps et les territoires traversés.
+  bioLong: `Né(e) à [ville], Matthieu DELFINI étudie les beaux-arts avant de développer une pratique de la peinture centrée sur le paysage, le corps et les territoires traversés.
 
 Les séries — Cameroun, Marseille, Impressions nomades — naissent de séjours prolongés et de la volonté de fixer des atmosphères plutôt que des anecdotes. La commande et l’in situ (plafond peint à La Samaritaine, peintures murales) prolongent ce travail dans un dialogue avec l’architecture et le lieu.
 

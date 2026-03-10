@@ -40,7 +40,7 @@ export function Header({ locale }: { locale: Locale }) {
             href={`/${locale}/`}
             className="font-sans text-sm md:text-base font-normal tracking-[0.2em] uppercase text-ink hover:opacity-80 transition-opacity"
           >
-            {site.artistName.toUpperCase()}
+            {site.artistName}
           </Link>
           <div className="flex items-center w-12 justify-end">
             <LanguageSwitcher currentLocale={locale} />

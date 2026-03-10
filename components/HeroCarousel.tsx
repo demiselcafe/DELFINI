@@ -48,7 +48,8 @@ export function HeroCarousel({ locale }: { locale: Locale }) {
         ))}
       </div>
 
-      {/* Indicateurs dots — style Claire Tabouret */}
+      {/* Indicateurs dots — masqués s'il n'y a qu'un slide */}
+      {slides.length > 1 && (
       <div className="flex justify-center gap-2 py-4">
         {slides.map((_, i) => (
           <button
@@ -63,6 +64,7 @@ export function HeroCarousel({ locale }: { locale: Locale }) {
           />
         ))}
       </div>
+      )}
 
       {/* Légende + bouton More information */}
       <div className="max-w-3xl mx-auto px-6 pb-12 text-center">
@@ -71,12 +73,23 @@ export function HeroCarousel({ locale }: { locale: Locale }) {
             {slide.caption}
           </p>
         )}
-        <Link
-          href={slide.moreInfoHref || `/${locale}/about`}
-          className="inline-block bg-ink text-white px-6 py-3 text-xs md:text-sm font-normal tracking-[0.2em] uppercase hover:bg-ink/90 transition-colors"
-        >
-          More information
-        </Link>
+        {slide.moreInfoHref?.startsWith("http") ? (
+          <a
+            href={slide.moreInfoHref}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-ink text-white px-6 py-3 text-xs md:text-sm font-normal tracking-[0.2em] uppercase hover:bg-ink/90 transition-colors"
+          >
+            Voir sur Instagram
+          </a>
+        ) : (
+          <Link
+            href={slide.moreInfoHref || `/${locale}/about`}
+            className="inline-block bg-ink text-white px-6 py-3 text-xs md:text-sm font-normal tracking-[0.2em] uppercase hover:bg-ink/90 transition-colors"
+          >
+            More information
+          </Link>
+        )}
       </div>
     </section>
   );
