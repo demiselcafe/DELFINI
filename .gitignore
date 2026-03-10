@@ -37,8 +37,8 @@ Thumbs.db
 # TypeScript
 *.tsbuildinfo
 
-# Photo source (copiée dans public/images/)
+# Photo source à la racine (ne pas committer)
 IMG_9782.jpg
-# Images volumineuses (à ajouter en local ou via admin)
-public/images/IMG_9782.jpg
+# Exception : version compressée dans public (déployée sur Vercel)
+!public/images/IMG_9782.jpg
 public/uploads/
