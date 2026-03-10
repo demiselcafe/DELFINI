@@ -15,14 +15,13 @@ interface HeroCarouselProps {
 
 export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
   const [index, setIndex] = useState(0);
-  const safeSlides = Array.isArray(slides) && slides.length > 0 ? slides : [];
-  const slide = safeSlides[index];
+  const slide = slides[index];
 
   const goTo = useCallback(
     (i: number) => {
-      setIndex((i + safeSlides.length) % safeSlides.length);
+      setIndex((i + slides.length) % slides.length);
     },
-    [safeSlides.length]
+    [slides.length]
   );
 
   useEffect(() => {
@@ -32,16 +31,20 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
 
   return (
     <section className="relative w-full bg-white">
-      {/* Image hero plein écran */}
-      <div className="relative aspect-[4/5] md:aspect-[3/2] lg:min-h-[85vh] w-full">
-        {safeSlides.map((s, i) => {
+      {/* Image hero plein écran — hauteur explicite pour éviter zone blanche */}
+      <div
+        className="relative w-full bg-black/5"
+        style={{ minHeight: "70vh", aspectRatio: "3/2" }}
+      >
+        {slides.map((s, i) => {
           const isLocal = s.image.startsWith("/");
           return (
             <div
               key={s.id}
               className={`absolute inset-0 transition-opacity duration-700 ${
-                i === index ? "opacity-100 z-0" : "opacity-0 z-0"
+                i === index ? "opacity-100 z-10" : "opacity-0 z-0"
               }`}
+              style={{ pointerEvents: i === index ? "auto" : "none" }}
             >
               {isLocal ? (
                 <img
@@ -49,6 +52,7 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover object-center"
                   loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
                 />
               ) : (
                 <Image
@@ -66,9 +70,9 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
       </div>
 
       {/* Indicateurs dots — masqués s'il n'y a qu'un slide */}
-      {safeSlides.length > 1 && (
+      {slides.length > 1 && (
       <div className="flex justify-center gap-2 py-4">
-        {safeSlides.map((_, i) => (
+        {slides.map((_, i) => (
           <button
             key={i}
             type="button"
@@ -85,12 +89,12 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
 
       {/* Légende + bouton More information */}
       <div className="max-w-3xl mx-auto px-6 pb-12 text-center">
-        {slide?.caption && (
+        {slide.caption && (
           <p className="text-sm md:text-base text-ink/90 tracking-wide mb-6 uppercase">
             {slide.caption}
           </p>
         )}
-        {slide?.moreInfoHref?.startsWith("http") ? (
+        {slide.moreInfoHref?.startsWith("http") ? (
           <a
             href={slide.moreInfoHref}
             target="_blank"
@@ -101,7 +105,7 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
           </a>
         ) : (
           <Link
-            href={slide?.moreInfoHref || `/${locale}/about`}
+            href={slide.moreInfoHref || `/${locale}/about`}
             className="inline-block bg-ink text-white px-6 py-3 text-xs md:text-sm font-normal tracking-[0.2em] uppercase hover:bg-ink/90 transition-colors"
           >
             More information
