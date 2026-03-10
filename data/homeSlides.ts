@@ -1,6 +1,9 @@
 /**
  * Slides du carousel de la page d'accueil — photos HD libres de droits (Unsplash)
  */
+export const FALLBACK_HERO_URL =
+  "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1600&q=90";
+
 export interface HomeSlide {
   id: string;
   image: string;
