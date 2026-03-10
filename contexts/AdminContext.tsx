@@ -13,7 +13,18 @@ interface AdminContextValue {
   setLoginModalOpen: (v: boolean) => void;
 }
 
-const AdminContext = createContext<AdminContextValue | null>(null);
+const defaultContextValue: AdminContextValue = {
+  isAdmin: false,
+  isEditMode: false,
+  setEditMode: () => {},
+  login: async () => false,
+  logout: async () => {},
+  refreshSession: async () => {},
+  loginModalOpen: false,
+  setLoginModalOpen: () => {},
+};
+
+const AdminContext = createContext<AdminContextValue>(defaultContextValue);
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -77,7 +88,5 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAdmin() {
-  const ctx = useContext(AdminContext);
-  if (!ctx) throw new Error("useAdmin must be used within AdminProvider");
-  return ctx;
+  return useContext(AdminContext);
 }

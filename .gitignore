@@ -36,3 +36,9 @@ Thumbs.db
 
 # TypeScript
 *.tsbuildinfo
+
+# Photo source (copiée dans public/images/)
+IMG_9782.jpg
+# Images volumineuses (à ajouter en local ou via admin)
+public/images/IMG_9782.jpg
+public/uploads/

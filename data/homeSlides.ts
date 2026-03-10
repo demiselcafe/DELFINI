@@ -12,7 +12,7 @@ export interface HomeSlide {
 export const homeSlides: HomeSlide[] = [
   {
     id: "1",
-    image: "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1600&q=90",
+    image: "/images/IMG_9782.jpg",
     caption: "EXPOSITION EN COURS — GALERIE CONTEMPORAINE, PARIS. DU 15 JANVIER AU 30 MARS 2026.",
   },
   {

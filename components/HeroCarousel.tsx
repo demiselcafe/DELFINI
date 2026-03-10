@@ -15,13 +15,14 @@ interface HeroCarouselProps {
 
 export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
   const [index, setIndex] = useState(0);
-  const slide = slides[index];
+  const safeSlides = Array.isArray(slides) && slides.length > 0 ? slides : [];
+  const slide = safeSlides[index];
 
   const goTo = useCallback(
     (i: number) => {
-      setIndex((i + slides.length) % slides.length);
+      setIndex((i + safeSlides.length) % safeSlides.length);
     },
-    [slides.length]
+    [safeSlides.length]
   );
 
   useEffect(() => {
@@ -33,29 +34,41 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
     <section className="relative w-full bg-white">
       {/* Image hero plein écran */}
       <div className="relative aspect-[4/5] md:aspect-[3/2] lg:min-h-[85vh] w-full">
-        {slides.map((s, i) => (
-          <div
-            key={s.id}
-            className={`absolute inset-0 transition-opacity duration-700 ${
-              i === index ? "opacity-100 z-0" : "opacity-0 z-0"
-            }`}
-          >
-            <Image
-              src={s.image}
-              alt=""
-              fill
-              className="object-cover object-center"
-              priority={i === 0}
-              sizes="100vw"
-            />
-          </div>
-        ))}
+        {safeSlides.map((s, i) => {
+          const isLocal = s.image.startsWith("/");
+          return (
+            <div
+              key={s.id}
+              className={`absolute inset-0 transition-opacity duration-700 ${
+                i === index ? "opacity-100 z-0" : "opacity-0 z-0"
+              }`}
+            >
+              {isLocal ? (
+                <img
+                  src={s.image}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover object-center"
+                  loading={i === 0 ? "eager" : "lazy"}
+                />
+              ) : (
+                <Image
+                  src={s.image}
+                  alt=""
+                  fill
+                  className="object-cover object-center"
+                  priority={i === 0}
+                  sizes="100vw"
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {/* Indicateurs dots — masqués s'il n'y a qu'un slide */}
-      {slides.length > 1 && (
+      {safeSlides.length > 1 && (
       <div className="flex justify-center gap-2 py-4">
-        {slides.map((_, i) => (
+        {safeSlides.map((_, i) => (
           <button
             key={i}
             type="button"
@@ -72,12 +85,12 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
 
       {/* Légende + bouton More information */}
       <div className="max-w-3xl mx-auto px-6 pb-12 text-center">
-        {slide.caption && (
+        {slide?.caption && (
           <p className="text-sm md:text-base text-ink/90 tracking-wide mb-6 uppercase">
             {slide.caption}
           </p>
         )}
-        {slide.moreInfoHref?.startsWith("http") ? (
+        {slide?.moreInfoHref?.startsWith("http") ? (
           <a
             href={slide.moreInfoHref}
             target="_blank"
@@ -88,7 +101,7 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
           </a>
         ) : (
           <Link
-            href={slide.moreInfoHref || `/${locale}/about`}
+            href={slide?.moreInfoHref || `/${locale}/about`}
             className="inline-block bg-ink text-white px-6 py-3 text-xs md:text-sm font-normal tracking-[0.2em] uppercase hover:bg-ink/90 transition-colors"
           >
             More information
