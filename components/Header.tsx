@@ -47,7 +47,10 @@ export function Header({ locale }: { locale: Locale }) {
           </div>
         </div>
         {/* Ligne 2 : Hamburger centré sous le nom */}
-        <div className="flex justify-center pb-2">
+        <div
+          className="flex justify-center pb-2"
+          onMouseEnter={() => setMenuOpen(true)}
+        >
           <button
             type="button"
             className="p-2 text-ink hover:opacity-70 transition-opacity"
@@ -68,6 +71,7 @@ export function Header({ locale }: { locale: Locale }) {
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
         aria-hidden={!menuOpen}
+        onMouseLeave={() => setMenuOpen(false)}
       >
         <nav className="py-3 px-4 flex flex-col">
           {MAIN_LINKS.map(({ href, label }) => (
