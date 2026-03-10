@@ -13,8 +13,12 @@ interface HeroCarouselProps {
   slides: HomeSlide[];
 }
 
+const FALLBACK_HERO =
+  "https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1600&q=90";
+
 export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
   const [index, setIndex] = useState(0);
+  const [failedLocal, setFailedLocal] = useState<Set<number>>(new Set());
   const slide = slides[index];
 
   const goTo = useCallback(
@@ -38,6 +42,10 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
       >
         {slides.map((s, i) => {
           const isLocal = s.image.startsWith("/");
+          const useFallback = isLocal && failedLocal.has(i);
+          const src = useFallback ? FALLBACK_HERO : s.image;
+          const showAsLocal = isLocal && !useFallback;
+
           return (
             <div
               key={s.id}
@@ -46,17 +54,18 @@ export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
               }`}
               style={{ pointerEvents: i === index ? "auto" : "none" }}
             >
-              {isLocal ? (
+              {showAsLocal ? (
                 <img
                   src={s.image}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover object-center"
                   loading={i === 0 ? "eager" : "lazy"}
                   decoding="async"
+                  onError={() => setFailedLocal((prev) => new Set(prev).add(i))}
                 />
               ) : (
                 <Image
-                  src={s.image}
+                  src={src}
                   alt=""
                   fill
                   className="object-cover object-center"
