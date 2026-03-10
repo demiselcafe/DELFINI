@@ -6,12 +6,26 @@ Site minimaliste et professionnel pour un peintre : esprit galerie, pas de shop,
 
 ```bash
 npm install
+cp .env.example .env
+# Éditer .env et définir ADMIN_PASSWORD pour le mode admin
 npm run dev
 ```
 
 Ouvrir [http://localhost:3004](http://localhost:3004).
 
-## Modifier le contenu
+## Mode administrateur
+
+En bas à droite du site, un bouton **Admin** permet de se connecter (mot de passe défini dans `ADMIN_PASSWORD` ou `ADMIN_SECRET`). Une fois connecté :
+
+- Un bouton **Paramétrage** apparaît : l’activer pour passer en mode édition.
+- Une bannière « Mode paramétrage » s’affiche sous le header.
+- Sur les pages **Home**, **About** et **Works**, des barres d’édition apparaissent **sous chaque zone d’image** avec un bouton **Choisir ou téléverser**.
+- Cliquer dessus ouvre la **médiathèque** : choisir une image déjà en ligne ou **téléverser** une nouvelle depuis l’ordinateur. Les images sont stockées dans `public/uploads/` et les réglages dans `data/adminOverrides.json`.
+- L’interface reste la même que le site public : vous naviguez normalement et modifiez les images à la volée en mode paramétrage.
+
+**Architecture** : authentification par cookie de session (API `/api/auth/*`), stockage des fichiers dans `public/uploads/`, surcharge des images via `data/adminOverrides.json` (les données des fichiers `data/*.ts` restent la base ; les overrides remplacent uniquement les URLs d’images). Voir `.env.example` pour la configuration.
+
+## Modifier le contenu (fichiers)
 
 Tout le contenu éditable se trouve dans le dossier **`data/`**. Aucune compétence technique n’est nécessaire pour modifier les textes et chemins d’images.
 
@@ -27,7 +41,8 @@ Tout le contenu éditable se trouve dans le dossier **`data/`**. Aucune compéte
 ### Images
 
 - Placer les images dans **`public/images/`** (ex. `public/images/hero.jpg` pour la page d’accueil).
-- Dans les fichiers `data/*.ts`, indiquer le chemin à partir de la racine du site : `/images/hero.jpg`, `/images/series/cameroun.jpg`, etc.
+- Ou utiliser le **mode admin** pour téléverser et assigner des images sans toucher au code.
+- Dans les fichiers `data/*.ts`, les chemins partent de la racine : `/images/hero.jpg`, `/uploads/xxx.jpg`, etc.
 
 ### Page d’accueil
 

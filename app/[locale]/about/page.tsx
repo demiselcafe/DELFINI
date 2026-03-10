@@ -1,5 +1,6 @@
-import Image from "next/image";
 import { about } from "@/data/about";
+import { mergeAboutPortrait } from "@/lib/adminOverrides";
+import { AboutPortraitWithAdmin } from "@/components/AboutPortraitWithAdmin";
 
 export const metadata = {
   title: "About",
@@ -7,6 +8,7 @@ export const metadata = {
 };
 
 export default function AboutPage() {
+  const portrait = mergeAboutPortrait();
   return (
     <div className="pt-[4.5rem] md:pt-24 pb-20 md:pb-28">
       <div className="max-w-3xl mx-auto px-6">
@@ -15,17 +17,7 @@ export default function AboutPage() {
         </header>
 
         <div className="grid md:grid-cols-12 gap-10 md:gap-16">
-          <div className="md:col-span-5">
-            <div className="relative aspect-[3/4] max-w-md bg-black/5">
-              <Image
-                src={about.portrait}
-                alt=""
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 40vw"
-              />
-            </div>
-          </div>
+          <AboutPortraitWithAdmin portrait={portrait} />
           <div className="md:col-span-7 space-y-8">
             <p className="text-ink text-base md:text-lg leading-relaxed">
               {about.bioShort}

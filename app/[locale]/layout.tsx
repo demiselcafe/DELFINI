@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { SetHtmlLang } from "@/components/SetHtmlLang";
+import { AdminProvider } from "@/contexts/AdminContext";
+import { AdminBanner } from "@/components/AdminBanner";
+import { AdminBannerSpacer } from "@/components/AdminBannerSpacer";
+import { LoginWidget } from "@/components/LoginWidget";
 import { site } from "@/data/site";
 import { isValidLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
@@ -28,9 +32,16 @@ export default async function LocaleLayout({
   return (
     <>
       <SetHtmlLang />
-      <Header locale={locale} />
-      <main className="flex-1">{children}</main>
-      <Footer locale={locale} />
+      <AdminProvider>
+        <Header locale={locale} />
+        <AdminBanner />
+        <main className="flex-1">
+          <AdminBannerSpacer />
+          {children}
+        </main>
+        <Footer locale={locale} />
+        <LoginWidget />
+      </AdminProvider>
     </>
   );
 }

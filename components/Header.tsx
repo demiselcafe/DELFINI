@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { site } from "@/data/site";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { useAdmin } from "@/contexts/AdminContext";
 import type { Locale } from "@/lib/i18n";
 
 const MAIN_LINKS = [
@@ -19,6 +20,7 @@ const MAIN_LINKS = [
 export function Header({ locale }: { locale: Locale }) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { setLoginModalOpen } = useAdmin();
   const prefix = `/${locale}`;
 
   useEffect(() => {
@@ -31,7 +33,9 @@ export function Header({ locale }: { locale: Locale }) {
   };
 
   return (
-    <>
+    <div
+      onMouseLeave={() => setMenuOpen(false)}
+    >
       <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-black/5">
         {/* Ligne 1 : Nom centré + langue à droite */}
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-14 md:h-16">
@@ -42,8 +46,14 @@ export function Header({ locale }: { locale: Locale }) {
           >
             {site.artistName}
           </Link>
-          <div className="flex items-center w-12 justify-end">
+          <div className="flex items-center justify-end gap-2 min-w-[4.5rem]">
             <LanguageSwitcher currentLocale={locale} />
+            <button
+              type="button"
+              onClick={() => setLoginModalOpen(true)}
+              className="w-2 h-2 rounded-full bg-ink hover:bg-ink/80 cursor-pointer"
+              aria-label="Connexion admin"
+            />
           </div>
         </div>
         {/* Ligne 2 : Hamburger centré sous le nom */}
@@ -71,14 +81,13 @@ export function Header({ locale }: { locale: Locale }) {
           menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
         aria-hidden={!menuOpen}
-        onMouseLeave={() => setMenuOpen(false)}
       >
-        <nav className="py-3 px-4 flex flex-col">
+        <nav className="py-3 px-4 flex flex-col items-center text-center">
           {MAIN_LINKS.map(({ href, label }) => (
             <Link
               key={label}
               href={href(prefix)}
-              className={`py-2 px-2 text-xs tracking-[0.15em] uppercase transition-colors hover:text-ink ${
+              className={`py-2 px-2 text-xs tracking-[0.15em] uppercase transition-colors hover:text-ink w-full text-center ${
                 isActive(href(prefix)) ? "text-ink font-medium" : "text-inkMuted"
               }`}
               onClick={() => setMenuOpen(false)}
@@ -91,7 +100,7 @@ export function Header({ locale }: { locale: Locale }) {
               href={site.instagram}
               target="_blank"
               rel="noopener noreferrer"
-              className="py-2 px-2 text-xs tracking-[0.15em] uppercase text-inkMuted hover:text-ink transition-colors"
+              className="py-2 px-2 text-xs tracking-[0.15em] uppercase text-inkMuted hover:text-ink transition-colors w-full text-center"
               onClick={() => setMenuOpen(false)}
             >
               Instagram
@@ -99,6 +108,6 @@ export function Header({ locale }: { locale: Locale }) {
           )}
         </nav>
       </div>
-    </>
+    </div>
   );
 }

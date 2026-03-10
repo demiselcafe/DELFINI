@@ -3,14 +3,18 @@
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { homeSlides } from "@/data/homeSlides";
 import type { Locale } from "@/lib/i18n";
+import type { HomeSlide } from "@/data/homeSlides";
 
 const AUTOPLAY_MS = 6000;
 
-export function HeroCarousel({ locale }: { locale: Locale }) {
+interface HeroCarouselProps {
+  locale: Locale;
+  slides: HomeSlide[];
+}
+
+export function HeroCarousel({ locale, slides }: HeroCarouselProps) {
   const [index, setIndex] = useState(0);
-  const slides = homeSlides;
   const slide = slides[index];
 
   const goTo = useCallback(
